@@ -1,0 +1,4 @@
+interface:
+  display_name: "Seedance 2.5 Prompt"
+  short_description: "编写并校验即梦 Seedance 2.5 视频提示词"
+  default_prompt: "使用 $seedance-2-5-prompt 根据我的剧情和素材编写可直接提交的视频提示词。"
