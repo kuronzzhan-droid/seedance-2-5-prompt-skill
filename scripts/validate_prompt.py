@@ -32,8 +32,12 @@ TIME_TITLE_RE = re.compile(
 )
 UI_PARAMETER_PATTERNS = (
     re.compile(r"(?:全片|总时长|视频时长)\s*[:：]?\s*\d+(?:\.\d+)?\s*秒", re.IGNORECASE),
-    re.compile(r"(?<!\d)(?:16\s*[:：]\s*9|9\s*[:：]\s*16)(?!\d)"),
+    re.compile(r"(?<!\d)(?:16\s*[:：]\s*9|9\s*[:：]\s*16|21\s*[:：]\s*9)(?!\d)"),
     re.compile(r"(?<!\d)(?:480|720|1080)\s*p\+?(?!\w)", re.IGNORECASE),
+)
+NEGATIVE_PHRASE_RE = re.compile(
+    r"不要|没有|不是|禁止|避免|不参考|不出现|不切换|不融合|不互换"
+    r"|无(?:字幕|背景音乐|噪点|颗粒|残影|额外)"
 )
 WHITE_MODEL_DIMENSION_RE = re.compile(
     r"(?:参考|保留|保持)[^。；\n]{0,100}"
@@ -107,6 +111,16 @@ def validate_prompt(
         issues.append(Issue("ERROR", "time-title", "时间后只写冒号，不添加【小标题】。"))
 
     issues.extend(_timestamp_issues(_time_ranges(text), duration))
+
+    negative_phrases = sorted(set(NEGATIVE_PHRASE_RE.findall(text)))
+    if negative_phrases:
+        issues.append(
+            Issue(
+                "WARN",
+                "negative-phrasing",
+                f"改写成正面描述，写画面里有什么：{'、'.join(negative_phrases)}。",
+            )
+        )
 
     is_white_model = mode == "white-model" or "白模" in text
     if is_white_model and not WHITE_MODEL_DIMENSION_RE.search(text):

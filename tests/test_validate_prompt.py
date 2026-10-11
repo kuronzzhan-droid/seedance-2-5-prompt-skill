@@ -62,13 +62,31 @@ class ValidatePromptTests(unittest.TestCase):
 
     def test_accepts_explicit_white_model_reference_and_mapping(self) -> None:
         prompt = (
-            "只参考@视频1的运镜、动作、动线和角色站位，不参考白模外观。"
+            "只参考@视频1的运镜、动作、动线和角色站位，外观以@图1和@图2为准。"
             "@视频1中的右侧模型对应@图1的角色甲，左侧模型对应@图2的角色乙。"
         )
 
         issues = validate_prompt(prompt, mode="white-model")
 
         self.assertEqual([], issues)
+
+    def test_rejects_wide_aspect_ratio_in_prompt(self) -> None:
+        codes = issue_codes("21:9，三渲二。\n0—30秒：角色走近。", duration=30)
+
+        self.assertIn("ui-parameter", codes)
+
+    def test_warns_on_negative_phrasing(self) -> None:
+        issues = validate_prompt("0—30秒：画面里不要出现路人，无字幕。", duration=30)
+
+        self.assertEqual(["negative-phrasing"], [issue.code for issue in issues])
+        self.assertEqual("WARN", issues[0].level)
+        self.assertIn("不要", issues[0].message)
+        self.assertIn("无字幕", issues[0].message)
+
+    def test_accepts_positive_phrasing(self) -> None:
+        prompt = "0—30秒：画面里只有马格努斯，全段是环境声和动作声。"
+
+        self.assertEqual([], validate_prompt(prompt, duration=30))
 
     def test_cli_returns_nonzero_and_json_for_invalid_prompt(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
