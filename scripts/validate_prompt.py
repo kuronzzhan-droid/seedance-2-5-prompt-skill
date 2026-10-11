@@ -37,7 +37,7 @@ UI_PARAMETER_PATTERNS = (
 )
 NEGATIVE_PHRASE_RE = re.compile(
     r"不要|没有|不是|禁止|避免|不参考|不出现|不切换|不融合|不互换"
-    r"|无(?:字幕|背景音乐|噪点|颗粒|残影|额外)"
+    r"|无(?!缝|论|数|限|人机|线|比)"
 )
 WHITE_MODEL_DIMENSION_RE = re.compile(
     r"(?:参考|保留|保持)[^。；\n]{0,100}"

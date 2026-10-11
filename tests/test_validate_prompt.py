@@ -81,7 +81,12 @@ class ValidatePromptTests(unittest.TestCase):
         self.assertEqual(["negative-phrasing"], [issue.code for issue in issues])
         self.assertEqual("WARN", issues[0].level)
         self.assertIn("不要", issues[0].message)
-        self.assertIn("无字幕", issues[0].message)
+        self.assertIn("无", issues[0].message)
+
+    def test_allows_words_that_merely_contain_wu(self) -> None:
+        prompt = "0—30秒：两段画面无缝衔接，镜头跟着无人机升高。"
+
+        self.assertEqual([], validate_prompt(prompt, duration=30))
 
     def test_accepts_positive_phrasing(self) -> None:
         prompt = "0—30秒：画面里只有马格努斯，全段是环境声和动作声。"
