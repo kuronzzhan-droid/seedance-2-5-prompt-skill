@@ -33,6 +33,37 @@
 | 用 “photorealistic” 开启写实 | OpenAI | 只适用于超写实路线，三渲二会被拉向写实 |
 | 后期选项（超分到 4K、插帧、配乐生成） | Dreamina | 是界面功能，不属于提示词写法 |
 
+## 社区实测（第二轮）
+
+知乎、X 上的几篇实测长文（如 [302.AI 实测](https://zhuanlan.zhihu.com/p/2070915165789466937)、[拆 200 条提示词的总结](https://x.com/cheerselflin/article/2085591217841250326)）的站点不允许抓取正文，下面只用了能读到全文的社区来源：
+
+- [dexhunter/seedance2-skill（中文版 SKILL.md）](https://github.com/dexhunter/seedance2-skill/blob/main/zh/SKILL.md)
+- [琥云：拆解官方提示词语法与 50 套模板](https://www.huyunjiaoyu.cn/article/102775.html)
+- [18183：Seedance 2.5 提示词技巧](https://m.18183.com/gonglue/202608/39tmj6m6.html)
+- [HeigeAI：GPT Image 2 动漫提示词](https://www.heigeai.com/en/prompts/anime/)
+
+采用的：
+
+| 技巧 | 来源 | 写进了哪里 |
+|---|---|---|
+| 二维动画会被自动加立体光影和金属反光，金属玻璃写成平涂加硬边高光，道具选扁平的 | 琥云 | `positive-prompting.md` 第 8 节 |
+| 写实真人清晰脸部不能作参考，会被拦截 | dexhunter Skill | `platform-settings.md` 第 4 节 |
+| 一条提示词的参考素材控制在十个左右 | 18183 | `platform-settings.md` 第 4 节 |
+| 延长时界面时长选新增部分的长度 | dexhunter Skill | SKILL.md“视频延长” |
+| 出图画风写到具体年代和类型；设定图逐个点名视图；换姿势时附定稿图；小细节出图后逐件对照 | HeigeAI | `gpt-image-prompts.md` 第 2 节 |
+
+没有采用的：
+
+| 技巧 | 来源 | 原因 |
+|---|---|---|
+| 提示词控制在 200—400 字，过长会丢指令 | 18183 | 用户多镜头片实测一千三到一千五百字稳定出片；短提示词适合单镜头 |
+| 30 秒固定拆成三段各 10 秒 | 18183 | 实测五到九个镜头、单镜三到七秒，按动作容量分配 |
+| 用不同括号标记配乐、音效、台词、字幕 | 琥云 | 没有官方出处，用户实测用“用某某的声音参考的音色……说：「台词」”已稳定 |
+| 二维动画加“无立体光影、无金属反光”限制词 | 琥云 | 采用了它指出的问题，改成正面写法 |
+| 一镜到底写“全程不要切镜头” | dexhunter Skill | 改成正面写法“一个连续镜头，一镜到底” |
+| 末尾附“胶片颗粒”等风格修饰词 | dexhunter Skill | 三渲二要干净平整，颗粒会破坏画面；写实路线另议 |
+| 总素材不超过 12 个、音频不超过 15 秒 | dexhunter Skill | 这是 2.0 时代的限制，2.5 的 30 秒档上限见 `platform-settings.md` |
+
 ## 可以以后再考虑的
 
 - video-director Skill 有一份行为测试集（输入场景加期望的输出约束），可以借鉴来给本技能做回归测试。
