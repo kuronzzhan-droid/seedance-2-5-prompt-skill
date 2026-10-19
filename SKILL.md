@@ -18,6 +18,7 @@ description: Use when writing, rewriting, diagnosing, or validating prompts for 
 - 写提示词或选择结构时，读 `references/prompt-patterns.md`。
 - 涉及第一人称、多人、对白、真实感、白模或翻车修复时，读 `references/field-notes.md`。
 - 涉及正面改写、三渲二画风、30 秒多镜头结构、角色设定图、场景图或提交被拦时，读 `references/positive-prompting.md`。
+- 选择提交平台、核对界面参数、参考图规格或排查提交失败时，读 `references/platform-settings.md`。
 - 定稿后运行 `scripts/validate_prompt.py`。
 
 只加载当前任务需要的参考文件。
@@ -164,6 +165,20 @@ description: Use when writing, rewriting, diagnosing, or validating prompts for 
 降级：他已经换好宽松的泳裤坐在床边，我搓搓他的头，揉揉他的耳朵，他眯起眼睛往我手心里蹭。
 ```
 
+## 提交前核对平台设置
+
+即梦、Dreamina 和 Pippit 画布共用这些设置：选“全能参考”，画幅、时长、分辨率在页面上选，刷新后再核对一次。参考图宽高比保持在 0.4 到 2.5 之间，超出时提交会直接失败。参考文件名用唯一前缀，引用时带尾下划线。
+
+示例：
+
+```text
+上传：E1v9_1-1_图1_马格努斯设定.png（1672×941，宽高比 1.78）
+引用：@E1v9_1-1_图1_ 是马格努斯的角色设定图，他的外观照这张。
+界面：全能参考，21:9，720P，30 秒。
+```
+
+完整的上限、引用和审核处理见 `references/platform-settings.md`。
+
 ## 按模式补充
 
 ### 白模
@@ -216,11 +231,7 @@ description: Use when writing, rewriting, diagnosing, or validating prompts for 
 python scripts/validate_prompt.py prompt.txt --duration 30 --mode white-model
 ```
 
-也可从标准输入读取：
-
-```powershell
-Get-Content prompt.txt -Raw | python scripts/validate_prompt.py - --duration 30
-```
+提示词保存为 UTF-8 文件后直接传路径。PowerShell 管道会把中文变成 `?`，Windows 上避免用管道传中文提示词；`-` 读标准输入只用于类 Unix shell。
 
 修复所有 `ERROR` 后再交付。`WARN negative-phrasing` 会列出否定词，逐处改写成正面描述。
 
