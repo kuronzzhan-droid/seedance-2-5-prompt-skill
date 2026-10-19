@@ -19,6 +19,8 @@ description: Use when writing, rewriting, diagnosing, or validating prompts for 
 - 涉及第一人称、多人、对白、真实感、白模或翻车修复时，读 `references/field-notes.md`。
 - 涉及正面改写、三渲二画风、30 秒多镜头结构、角色设定图、场景图或提交被拦时，读 `references/positive-prompting.md`；完整三渲二示例在 `references/prompt-patterns.md` 第 9 节。
 - 选择提交平台、核对界面参数、参考图规格或排查提交失败时，读 `references/platform-settings.md`。
+- 用 GPT Image 准备角色设定图、场景图或机位图时，读 `references/gpt-image-prompts.md`。
+- 想知道某条网上流行的技巧为什么采用或没采用时，读 `references/online-sources.md`。
 - 定稿后运行 `scripts/validate_prompt.py`。
 
 只加载当前任务需要的参考文件。
@@ -69,6 +71,8 @@ description: Use when writing, rewriting, diagnosing, or validating prompts for 
 ```
 
 多角色逐项点名，动作归属写到具体角色名。参考已经锁定的外观，正文只写角色名字。
+
+角色参考图默认管整个人：脸、毛发、体型、服装、鞋和配饰。图里的背景、姿势、裁切和光线由正文决定。只想借一部分时写明，例如“@图3只管罗尔夫的脸和面甲，服装照@图2”。
 
 每张参考图先过一遍：它和要的画面有没有矛盾（方向相反、画错的旧图）。有就不附，或先裁掉矛盾部分。给参考图起短名字，后面直接叫它，如“人和车的比例照‘骑车比例图’的正面”。
 
@@ -128,6 +132,11 @@ description: Use when writing, rewriting, diagnosing, or validating prompts for 
 6. **环境声**：按出现顺序列出，写到最后一秒。
 
 每个镜头依次写：时间段 → 机位（景别、位置、高度、朝向、动不动）→ 地点是否同一个 → 怎么接上一镜 → 一串小动作 → 一两个会动的细节 → 神态 → 台词。角色每一镜都在做事：亮相时已在下一步动作里，骑行后跟拍时人一直在画面中央。
+
+- 一个镜头只给一种运镜（推近、环绕、跟拍或固定），写在光线和神态前面。运镜埋在画风描述后面容易被忽略。
+- 物理互动先写起因再写结果：“蜜瓜包从画面右侧飞进来，他一只手稳稳接住”。
+- 换镜方式可以直接点名：匹配剪辑、甩镜、前景遮挡。
+- 开头埋一个小物件，结尾再让它出现一次，30 秒的片子会更完整（进门那条的蜜瓜包从纸袋到被撕开）。
 
 示例镜头：
 
@@ -269,6 +278,10 @@ python scripts/validate_prompt.py prompt.txt --duration 30 --mode white-model
 - 对白、嘴部动作、音色和字幕是否绑定到正确角色？
 - 结尾是否停在明确、可生成、可续接的状态？
 - 校验器是否返回 `PASS`？
+
+## 出片不对时的调整顺序
+
+一次只改一层，改完再出一条对比：参考图与身份 → 镜头结构（几个镜头、在哪切）→ 运镜 → 画风与声音。出现莫名其妙的切镜时，正文第一段写明“一共五个镜头”或“一个连续镜头，一镜到底”。
 
 ## 常见错误
 
