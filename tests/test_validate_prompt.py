@@ -93,6 +93,36 @@ class ValidatePromptTests(unittest.TestCase):
 
         self.assertEqual([], validate_prompt(prompt, duration=30))
 
+    def test_warns_on_more_than_two_voice_references(self) -> None:
+        prompt = "@音频1 甲。@音频2 乙。@音频3 丙。\n0—30秒：三人坐在桌边。"
+
+        self.assertIn("voice-reference-count", issue_codes(prompt, duration=30))
+
+    def test_warns_on_dialogue_without_voice_reference(self) -> None:
+        prompt = "0—4秒：白说：「来了。」\n4—30秒：用白的声音参考的音色说：「走吧。」"
+
+        issues = validate_prompt(prompt, duration=30)
+
+        self.assertEqual(["dialogue-voice-binding"], [issue.code for issue in issues])
+        self.assertIn("0—4秒", issues[0].message)
+
+    def test_warns_on_backlight_and_loud(self) -> None:
+        prompt = "0—30秒：逆光下他大声笑。"
+
+        codes = [issue.code for issue in validate_prompt(prompt, duration=30)]
+
+        self.assertEqual(["risky-word", "risky-word"], codes)
+
+    def test_reference_examples_pass(self) -> None:
+        import re
+
+        for path in (REPO_ROOT / "references").glob("*.md"):
+            text = path.read_text(encoding="utf-8")
+            pattern = r"<!-- validated-example-start -->\s*```text\n(.*?)```"
+            for example in re.findall(pattern, text, re.S):
+                with self.subTest(path=path.name):
+                    self.assertEqual([], validate_prompt(example, duration=30))
+
     def test_cli_returns_nonzero_and_json_for_invalid_prompt(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             prompt_path = Path(directory) / "prompt.txt"
