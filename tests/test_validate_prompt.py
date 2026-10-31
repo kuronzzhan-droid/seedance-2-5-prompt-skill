@@ -62,13 +62,66 @@ class ValidatePromptTests(unittest.TestCase):
 
     def test_accepts_explicit_white_model_reference_and_mapping(self) -> None:
         prompt = (
-            "只参考@视频1的运镜、动作、动线和角色站位，不参考白模外观。"
+            "只参考@视频1的运镜、动作、动线和角色站位，外观以@图1和@图2为准。"
             "@视频1中的右侧模型对应@图1的角色甲，左侧模型对应@图2的角色乙。"
         )
 
         issues = validate_prompt(prompt, mode="white-model")
 
         self.assertEqual([], issues)
+
+    def test_rejects_wide_aspect_ratio_in_prompt(self) -> None:
+        codes = issue_codes("21:9，三渲二。\n0—30秒：角色走近。", duration=30)
+
+        self.assertIn("ui-parameter", codes)
+
+    def test_warns_on_negative_phrasing(self) -> None:
+        issues = validate_prompt("0—30秒：画面里不要出现路人，无字幕。", duration=30)
+
+        self.assertEqual(["negative-phrasing"], [issue.code for issue in issues])
+        self.assertEqual("WARN", issues[0].level)
+        self.assertIn("不要", issues[0].message)
+        self.assertIn("无", issues[0].message)
+
+    def test_allows_words_that_merely_contain_wu(self) -> None:
+        prompt = "0—30秒：两段画面无缝衔接，镜头跟着无人机升高。"
+
+        self.assertEqual([], validate_prompt(prompt, duration=30))
+
+    def test_accepts_positive_phrasing(self) -> None:
+        prompt = "0—30秒：画面里只有马格努斯，全段是环境声和动作声。"
+
+        self.assertEqual([], validate_prompt(prompt, duration=30))
+
+    def test_warns_on_more_than_two_voice_references(self) -> None:
+        prompt = "@音频1 甲。@音频2 乙。@音频3 丙。\n0—30秒：三人坐在桌边。"
+
+        self.assertIn("voice-reference-count", issue_codes(prompt, duration=30))
+
+    def test_warns_on_dialogue_without_voice_reference(self) -> None:
+        prompt = "0—4秒：白说：「来了。」\n4—30秒：用白的声音参考的音色说：「走吧。」"
+
+        issues = validate_prompt(prompt, duration=30)
+
+        self.assertEqual(["dialogue-voice-binding"], [issue.code for issue in issues])
+        self.assertIn("0—4秒", issues[0].message)
+
+    def test_warns_on_backlight_and_loud(self) -> None:
+        prompt = "0—30秒：逆光下他大声笑。"
+
+        codes = [issue.code for issue in validate_prompt(prompt, duration=30)]
+
+        self.assertEqual(["risky-word", "risky-word"], codes)
+
+    def test_reference_examples_pass(self) -> None:
+        import re
+
+        for path in (REPO_ROOT / "references").glob("*.md"):
+            text = path.read_text(encoding="utf-8")
+            pattern = r"<!-- validated-example-start -->\s*```text\n(.*?)```"
+            for example in re.findall(pattern, text, re.S):
+                with self.subTest(path=path.name):
+                    self.assertEqual([], validate_prompt(example, duration=30))
 
     def test_cli_returns_nonzero_and_json_for_invalid_prompt(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

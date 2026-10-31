@@ -32,9 +32,20 @@ TIME_TITLE_RE = re.compile(
 )
 UI_PARAMETER_PATTERNS = (
     re.compile(r"(?:全片|总时长|视频时长)\s*[:：]?\s*\d+(?:\.\d+)?\s*秒", re.IGNORECASE),
-    re.compile(r"(?<!\d)(?:16\s*[:：]\s*9|9\s*[:：]\s*16)(?!\d)"),
+    re.compile(r"(?<!\d)(?:16\s*[:：]\s*9|9\s*[:：]\s*16|21\s*[:：]\s*9)(?!\d)"),
     re.compile(r"(?<!\d)(?:480|720|1080)\s*p\+?(?!\w)", re.IGNORECASE),
 )
+NEGATIVE_PHRASE_RE = re.compile(
+    r"不要|没有|不是|禁止|避免|不参考|不出现|不切换|不融合|不互换"
+    r"|无(?!缝|论|数|限|人机|线|比)"
+)
+AUDIO_REFERENCE_RE = re.compile(r"@音频\s*(\d+)")
+DIALOGUE_RE = re.compile(r"「[^」]+」")
+VOICE_BINDING_RE = re.compile(r"声音参考|音色|@音频\s*\d+")
+RISKY_WORDS = {
+    "逆光": "“逆光”会在角色头顶生成光晕，改写光源在画外哪一侧。",
+    "大声": "“大声”会把音高抬离声音参考，语气写平常的。",
+}
 WHITE_MODEL_DIMENSION_RE = re.compile(
     r"(?:参考|保留|保持)[^。；\n]{0,100}"
     r"(?:运镜|动作|动线|运动轨迹|角色站位|站位|光影变化|镜头切接|构图|画面节奏)"
@@ -68,6 +79,12 @@ def _time_ranges(text: str) -> list[TimeRange]:
         end = int(match.group("end_min")) * 60 + float(match.group("end_sec"))
         ranges.append(TimeRange(start, end, match.start()))
     return sorted(ranges, key=lambda item: item.offset)
+
+
+def _segments(text: str) -> list[str]:
+    ranges = _time_ranges(text)
+    bounds = [item.offset for item in ranges] + [len(text)]
+    return [text[start:end] for start, end in zip(bounds, bounds[1:])]
 
 
 def _timestamp_issues(ranges: list[TimeRange], duration: float | None) -> list[Issue]:
@@ -107,6 +124,40 @@ def validate_prompt(
         issues.append(Issue("ERROR", "time-title", "时间后只写冒号，不添加【小标题】。"))
 
     issues.extend(_timestamp_issues(_time_ranges(text), duration))
+
+    audio_refs = set(AUDIO_REFERENCE_RE.findall(text))
+    if len(audio_refs) > 2:
+        issues.append(
+            Issue(
+                "WARN",
+                "voice-reference-count",
+                f"一条绑了 {len(audio_refs)} 条声音参考，超过两条时音色容易串到别的角色身上；拆成两条，每条两人说话。",
+            )
+        )
+
+    for segment in _segments(text):
+        if DIALOGUE_RE.search(segment) and not VOICE_BINDING_RE.search(segment):
+            issues.append(
+                Issue(
+                    "WARN",
+                    "dialogue-voice-binding",
+                    f"这一段的台词没有点名声音参考：{segment[:24]}……",
+                )
+            )
+
+    for word, message in RISKY_WORDS.items():
+        if word in text:
+            issues.append(Issue("WARN", "risky-word", message))
+
+    negative_phrases = sorted(set(NEGATIVE_PHRASE_RE.findall(text)))
+    if negative_phrases:
+        issues.append(
+            Issue(
+                "WARN",
+                "negative-phrasing",
+                f"改写成正面描述，写画面里有什么：{'、'.join(negative_phrases)}。",
+            )
+        )
 
     is_white_model = mode == "white-model" or "白模" in text
     if is_white_model and not WHITE_MODEL_DIMENSION_RE.search(text):
