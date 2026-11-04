@@ -87,7 +87,7 @@
 | 复杂任务拆成先参考生成、再编辑两步 | 方舟官方指南 | SKILL.md“智能/高级编辑” |
 | 三渲二写具体工艺，再附一张只管画风的参考图 | 社区共识 | SKILL.md“21:9 三渲二画风” |
 | 宫格分镜要逐格对应时间段，否则只被当作风格图 | @bmx_ai13 | `official-guide.md` 第 9 节 |
-| Codex 内置出图用的是 gpt-image-2，对话模型只负责调度 | OpenAI 官方文档 | `gpt-image-prompts.md` 第 4 节 |
+| Codex 内置出图是 ChatGPT Images 2.5，对话模型只负责调度。10-24 调研时按 Codex 文档页记成了 gpt-image-2，11-02 按 OpenAI 的发布公告更正 | [OpenAI 发布帖](https://x.com/OpenAI/status/2097394962782384318)、[TestingCatalog](https://www.testingcatalog.com/openai-launches-chatgpt-images-2-5-with-faster-editing/)、[MindStudio](https://www.mindstudio.ai/blog/gpt-image-25-pricing-access) | `gpt-image-prompts.md` 第 4 节 |
 | 设定图之外加一张比例参考图 | @techhalla | 技能里已有，见 `positive-prompting.md` 第 3、9 节 |
 | 改图一次只改一处，必须不变的区域改完合成回原图 | 方舟官方指南、OpenAI | 技能里已有，见 `gpt-image-prompts.md` 第 3 节 |
 
@@ -100,7 +100,7 @@
 | 声音用括号区分：( ) 配乐、< > 音效、{ } 台词、【】字幕 | 方舟官方指南 | 用户实测用「」加“用某某的声音参考的音色”，校验器也按「」检查台词绑定 |
 | 用 sd25-pe 改写提示词 | 方舟官方 Skill | 未实测改写后是否保留用户的正面写法和六段骨架 |
 | 参考图用粗糙的手绘设定图，精修插画会让出片发腻 | X @Iancu_ai | 用户的设定图是 GPT Image 精修图 |
-| 经 API 用更新的出图模型，对比 Codex 内置的 gpt-image-2 | OpenAI | 用户目前只经 Codex 出图 |
+| 经 API 用 GPT Image 2.5 Sunburst，对比 Codex 内置的 Images 2.5 | OpenAI | 用户目前只经 Codex 出图 |
 
 没有采用的：
 
