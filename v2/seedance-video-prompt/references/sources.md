@@ -1,4 +1,4 @@
-# 调研来源与版本说明（调研日期：2026-10-28）
+# 调研来源与版本说明（调研日期：2026-10-28，2026-11-08 补充）
 
 模型和平台更新很快。用户问到参数、价格或新功能时，以火山方舟官方文档和平台界面为准；这里只是调研当天的快照。
 
@@ -47,3 +47,32 @@
 - 第三方 SEO 攻略页（atlabs、cometapi、framia、seedance.tv 等）参数常互相矛盾，有的来自 API 转售商，只作参考；seedance.tv 和字节无关。
 - “720p 的提示词跟随度最好”：个人经验，没有系统验证。
 - 不同平台的积分价格、分辨率选项和素材上限可能不同，以平台界面为准。
+
+## 2026-11-08 补充：社区对 2.5 出片效果的讨论
+
+起因：《黄铜桂冠》v1 样片角色质感好，但缺动态感（用户 2026-11-08）。这次搜了 GitHub、英文教程站和中文社区。能找到的大多是个人经验和平台推广文，系统对比实验很少；Reddit 和 X 上没有搜到成串的讨论。
+
+- GrailLogic《How to Prompt Seedance 2.5: The Complete, Tested Guide》（2026-10-01、10-08、10-09 在 Higgsfield 和 Magic Hour 上实测）：https://grailogic.com/articles/seedance-2-5-prompt-guide/
+  - “慢慢、平静地、滑过”这类软动作词，出的是几乎不动的慢镜头；改成真实速度、带时间的事件以后才好。
+  - 静止肖像做首帧，结果是推向一张不动的脸，用不了。
+  - 不给每镜分秒数，模型在前几镜花太久、后面赶；建议 30 秒拆成两条 15 秒，每条 5–6 镜，有人或物在动的镜头不短于 1.5 秒。
+  - 整张场景参考图会被原样照搬，连瑕疵一起；参考图裁紧，一张只管一件事。
+  - “史诗感的摇镜”“戏剧性的变焦”会出又快又乱的运动；鸽群动作不自然；站在滑板车上骑行一直没拍真。
+  - 台词要短，说话人的脸在画面里要够大，长句会对不上口型。
+- Runware 的 Seedance 2.5 提示词文档：https://runware.ai/docs/models/bytedance-seedance-2-5/guides/prompting
+  - 每条只保留一个主要动作弧，两个独立动作抢同一段时长，两个都会走样。
+  - 开头写清镜头（推轨、固定机位），模型才把运动交给相机；不写时它倾向让主体乱动。
+  - 几百个字以后，多出的句子互相抢注意力，细节会掉。
+- LearnPrompt/awesome-seedance（“证据导向”的 Seedance 2.5 / 2.0 案例库，README 称上千个案例、近 500 次复测）：https://github.com/LearnPrompt/awesome-seedance
+  - 按连续时间段写，每段一种景别、一个主要动作、一行声音。
+  - “史诗”这类形容词会让两个人对着空气挥拳；打戏要写发力、接触点和攻防链。
+  - 反应写成因果链，不列表情清单；规模感靠参照物和低机位，不靠“巨大”这类词。
+- Krea、Kapwing 等教程（经验总结，未见对照实验）：写出运动带起的结果（扬尘、布料、液体）更有真实的动感；一条里微小事件太多会抖、会碎。
+  - https://www.krea.ai/blog/seedance-2-5-prompt-guide
+  - https://www.kapwing.com/resources/how-to-prompt-seedance-2-5-a-guide-for-ai-video-creators/
+- 中文社区（知乎、CSDN、掘金、纳逗Pro 手册）：多数在转述官方指南，即每段一个主要动作加一个主要运镜，结尾留几秒不加新事件。关于提示词长度的说法互相矛盾，有 80–200 字、150 词、200–400 字几种；运动幅度滑块的建议有调高的，也有调低的。都是个人经验，没有对照实验。
+  - https://nadoupro.iqiyi.com/hub/blog/nadoupro-x-seedance-25-prompt-handbook-10-scene-templates-and-debugging-methodology
+  - https://blog.csdn.net/youdiyunan/article/details/163630471
+  - https://zhuanlan.zhihu.com/p/2094294590996141158
+
+和这位用户自己实测冲突的地方：社区普遍认为提示词越长细节掉得越多；用户 2026-10-24 的 D6 对比里，只有约 11,400 字、写得最细的那版做对了复杂的后半段（每组只跑了一次）。所以“写短”没有写进规则，只把“每镜一个主要动作、别堆小动作”写了进去。
