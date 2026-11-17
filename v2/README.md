@@ -14,13 +14,14 @@
 | `seedance-video-prompt/references/templates-kemono.md` | 用你的角色写好的 6 条 30 秒模板 |
 | `gpt-image-prompt/` | 把想法或参考图需求写成 GPT Image 提示词，附参数建议和下一轮修改指令 |
 | `gpt-image-prompt/references/kemono-character-sheets.md` | 兽人设定图（正面全身 + 背面全身 + 头部特写）、表情表、给 Seedance 用的单视图参考和空镜、日文排版 |
+| `kemono-short-film-craft/` | 做兽人短片的整套做法：构思和剧本的三道检查、角色从草图迭代到 4K 定稿（附瓦胡德的迭代过程）、场景、把故事导成 30 秒分段、试片审片、剪辑和发布。标准来自《一枚铜币》 |
 | `资源与社区推荐.md` | GitHub 仓库、社区、书和工具的推荐清单，以及要避开的来源 |
 
 `creator-profile.md` 在本地两个技能里各放一份，内容相同，更新时两份一起改。
 
 ## 安装
 
-- **Claude 网页版 / 桌面版**：把 `v2/seedance-video-prompt/` 和 `v2/gpt-image-prompt/` 分别压缩成 zip（或 .skill）后，在技能（Skills）设置里上传。
+- **Claude 网页版 / 桌面版**：把 `v2/seedance-video-prompt/`、`v2/gpt-image-prompt/` 和 `v2/kemono-short-film-craft/` 分别压缩成 zip（或 .skill）后，在技能（Skills）设置里上传。
 - **Claude Code**：把这两个文件夹复制到 `~/.claude/skills/`（所有项目都能用），或某个项目的 `.claude/skills/`。
 - **其他支持 Agent Skills 的工具**：放进该工具的 skills 目录。
 
