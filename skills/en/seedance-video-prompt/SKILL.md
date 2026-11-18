@@ -1,9 +1,9 @@
 ---
 name: seedance-video-prompt
-description: Use when the user asks to write, rewrite, or debug a video prompt for ByteDance Seedance 2.5 (Dreamina, CapCut, Jimeng, Doubao, Pippit, Volcengine Ark / BytePlus ModelArk doubao-seedance-2-5; also works for Seedance 2.0). Covers 4–30 second clips with a focus on 30 second videos — second-by-second shot lists, one-take or multi-shot structure, camera moves, @image/@video/@audio reference roles, character consistency, dialogue lip-sync and sound, first/last frames, keyframes, storyboard grids, video editing and extension — plus dialogue scenes, fights, and close-ups for Japanese-speaking anthro (furry / kemono) characters. Trigger phrases include "Seedance prompt", "Dreamina video prompt", "turn this script or storyboard into a video prompt", "30 second AI video", "AI short drama / ad / music video prompt".
-summary: Turn an idea, script, storyboard, or reference set into a submit-ready Seedance 2.5 video prompt, with an asset list, platform settings, and dialogue drafts.
+description: Use when the user asks to write, rewrite, or debug a video prompt for ByteDance Seedance 2.5 (Dreamina, CapCut, Jimeng, Doubao, Pippit, Volcengine Ark / BytePlus ModelArk doubao-seedance-2-5; also works for Seedance 2.0). Strongest on western-fantasy and anthro (furry / kemono) characters in a realistic CG look, with cel-shaded and hand-painted styles also covered — dialogue scenes with Japanese lines, muzzle lip-sync, ear and tail acting, fights, and close-ups. Covers 4–30 second clips with a focus on 30 seconds — second-by-second shot lists, one-take or multi-shot structure, camera moves, @image/@video/@audio reference roles, character consistency, sound, first/last frames, keyframes, storyboard grids, video editing and extension — and general subjects such as ads, short drama, and music-synced promos. Trigger phrases include "Seedance prompt", "Dreamina video prompt", "turn this script or storyboard into a video prompt", "30 second AI video".
+summary: Turn an idea, script, storyboard, or reference set into a submit-ready Seedance 2.5 video prompt, with a tested method for realistic-CG anthro and western-fantasy scenes.
 version: 2.1.0
-tags: [seedance, video-generation, prompt-engineering, storyboard, furry, kemono, anime]
+tags: [seedance, video-generation, prompt-engineering, storyboard, furry, kemono, fantasy]
 ---
 
 # Seedance 2.5 video prompts (4–30 seconds, focus on 30)
