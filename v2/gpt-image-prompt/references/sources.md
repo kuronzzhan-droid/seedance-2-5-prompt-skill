@@ -10,6 +10,7 @@
 | 2025-10-06 | `gpt-image-1-mini` | 低成本版 |
 | 2025-12-16 | GPT Image 1.5（`gpt-image-1.5`） | ChatGPT Images；编辑更精确，速度更快 |
 | 2026-04 | GPT Image 2（`gpt-image-2`） | ChatGPT Images 2.0；生成过程引入推理，文字渲染大幅提升 |
+| 2026-11-05 | GPT Image 2.6：`gpt-image-2.6-sunburst` | 用户记录：项目默认 `quality: max`、`complexity: high`；本仓库还没对照官方模型页 |
 | 2026-09-08 | GPT Image 2.5：`gpt-image-2.5-flare` / `gpt-image-2.5-sunburst` | Flare 速度优先，Sunburst 质量优先；有 `-2026-09-08` 快照；ChatGPT 端新增草图（Sketch）、模板、图上评论 |
 
 ## 官方来源（优先级最高）
@@ -43,3 +44,4 @@
 - 文字准确率“约 99%”之类的数字没有可靠出处。
 - `input_fidelity` 在 2.5 上是否生效没有证实；`gpt-image-2` 官方要求不传。旧 Cookbook 的部分 gpt-image-2 编辑示例仍然传了 `input_fidelity="high"`，和参数表矛盾。
 - ChatGPT 端各功能（Thinking 模式、Sketch、圈选评论）的入口和可用范围随账号与地区变化，以实际界面为准。
+- sanye37/ye-skills（GitHub，CC BY-NC 4.0，2026-11-22 看过 v0.1.6）：通用生图提示词纪律。吸收了两条，用自己的话改写：交付前冷读（模型只看到本次输入）、改稿整段重写不追加。它允许保留排除句、主张省略模型能自己补的细节，和这位用户的正向写法、细节写满的规则冲突，没有吸收：https://github.com/sanye37/ye-skills
